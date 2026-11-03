@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Projeto Verão</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Projeto Verão</h1>
+        <select id="userSelect">
+            <option value="Alex">Alex</option>
+            <option value="Rita">Rita</option>
+            <option value="Filho">Filho</option>
+        </select>
+    </header>
+
+    <main>
+        <section id="refeicoes">
+            <h2>Registar Alimentação</h2>
+            <input type="text" id="mealInput" placeholder="Ex: Almoço - 150g frango, salada">
+            <button onclick="adicionarRefeicao()">Salvar Refeição</button>
+        </section>
+
+        <section id="treinos">
+            <h2>Treino de Hoje</h2>
+            <div id="workoutList"></div>
+        </section>
+
+        <section id="feed">
+            <h2>Feed Familiar</h2>
+            <ul id="feedList"></ul>
+        </section>
+    </main>
+
+    <!-- Firebase SDK (Versão 8) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
