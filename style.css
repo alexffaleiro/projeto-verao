@@ -255,3 +255,8 @@ input[type="checkbox"] {
         margin: 0 auto;
     }
 }
+@media (max-width: 767px) {
+    .hero {
+        background-position: center top;
+    }
+}
