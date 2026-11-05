@@ -1,0 +1,124 @@
+:root {
+    --bg-color: #0B0B0F;
+    --surface-color: #1A1A24;
+    --primary-color: #7C3AED;
+    --accent-color: #F97316;
+    --text-light: #F3F4F6;
+    --text-muted: #9CA3AF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-light);
+    padding-bottom: 2rem;
+}
+
+header {
+    background-color: var(--surface-color);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+select, input, button {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+}
+
+select {
+    background-color: var(--bg-color);
+    color: var(--text-light);
+    border: 1px solid var(--primary-color);
+    outline: none;
+}
+
+main {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+section {
+    background-color: var(--surface-color);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+input {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    background-color: var(--bg-color);
+    color: var(--text-light);
+    outline: none;
+    border: 1px solid transparent;
+}
+
+input:focus {
+    border: 1px solid var(--primary-color);
+}
+
+button {
+    width: 100%;
+    background-color: var(--accent-color);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+button:active {
+    opacity: 0.8;
+}
+
+.workout-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    background-color: var(--bg-color);
+    padding: 0.8rem;
+    border-radius: 8px;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary-color);
+}
+
+#feedList {
+    list-style: none;
+}
+
+.feed-item {
+    background-color: var(--bg-color);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+    border-left: 4px solid var(--accent-color);
+}
+
+.feed-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
