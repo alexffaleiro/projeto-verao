@@ -1,29 +1,50 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>Projeto Verão</title>
-    <link rel="manifest" href="manifest.json?v=2">
+
+    <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="logo-app-192.png">
     <link rel="apple-touch-icon" href="logo-app-192.png">
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <header>
-        <h1>Projeto Verão</h1>
-        <select id="userSelect">
-            <option value="Alex">Alex</option>
-            <option value="Rita">Rita</option>
-            <option value="Arthur">Arthur</option>
-        </select>
+
+    <header class="hero">
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <h1>Projeto Verão</h1>
+            <p>Nossa jornada juntos 💜</p>
+
+            <select id="userSelect" aria-label="Selecionar usuário">
+                <option value="Alex">Alex</option>
+                <option value="Rita">Rita</option>
+                <option value="Arthur">Arthur</option>
+            </select>
+        </div>
     </header>
 
     <main>
+
         <section id="refeicoes">
-            <h2>Registar Alimentação</h2>
-            <input type="text" id="mealInput" placeholder="Ex: Almoço - 150g frango, salada">
-            <button onclick="adicionarRefeicao()">Salvar Refeição</button>
+            <h2>Registrar Alimentação</h2>
+
+            <input
+                type="text"
+                id="mealInput"
+                placeholder="Ex: Almoço - frango, arroz e salada"
+                autocomplete="off"
+            >
+
+            <button type="button" onclick="adicionarRefeicao()">
+                Salvar Refeição
+            </button>
         </section>
 
         <section id="treinos">
@@ -32,14 +53,56 @@
         </section>
 
         <section id="feed">
-            <h2>Feed Familiar</h2>
-            <ul id="feedList"></ul>
+            <h2>Feed da Família</h2>
+
+            <div class="family-cards">
+
+                <article class="person-card" data-user="Alex">
+                    <div class="person-header">
+                        <img src="alex.jpg" alt="Foto de Alex" class="person-photo">
+                        <div>
+                            <h3>Alex</h3>
+                            <span>Minhas atividades</span>
+                        </div>
+                    </div>
+
+                    <ul id="feed-Alex" class="feed-list"></ul>
+                </article>
+
+                <article class="person-card" data-user="Rita">
+                    <div class="person-header">
+                        <img src="rita.jpg" alt="Foto de Rita" class="person-photo">
+                        <div>
+                            <h3>Rita</h3>
+                            <span>Minhas atividades</span>
+                        </div>
+                    </div>
+
+                    <ul id="feed-Rita" class="feed-list"></ul>
+                </article>
+
+                <article class="person-card" data-user="Arthur">
+                    <div class="person-header">
+                        <img src="arthur.jpg" alt="Foto de Arthur" class="person-photo">
+                        <div>
+                            <h3>Arthur</h3>
+                            <span>Minhas atividades</span>
+                        </div>
+                    </div>
+
+                    <ul id="feed-Arthur" class="feed-list"></ul>
+                </article>
+
+            </div>
         </section>
+
     </main>
 
-    <!-- Firebase SDK (Versão 8) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <script src="app.js"></script>
+
 </body>
 </html>

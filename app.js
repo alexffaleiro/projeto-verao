@@ -1,4 +1,4 @@
-// Configuração do seu Firebase
+// Configuração do Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyBpGqzNtj_arT31OrsU4D8Y_jczOGDJLcQ",
     authDomain: "projeto-verao-2027-araweb.firebaseapp.com",
@@ -10,201 +10,189 @@ const firebaseConfig = {
     measurementId: "G-5F6MXB0E9K"
 };
 
-// Inicializa Firebase (Compatível com os scripts que colocamos no index.html)
+// Inicializa o Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// Treinos Fixos (Hardcoded) para o primeiro mês
+// Treinos fixos
 const treinosDeHoje = [
     "Aquecimento: 5km corrida/caminhada",
     "Musculação: Treino de Força do dia",
     "Alongamento / Mobilidade"
 ];
 
-// Renderiza a lista de treinos
+// Renderiza os treinos
 function carregarTreinos() {
-    const workoutList = document.getElementById('workoutList');
-    workoutList.innerHTML = treinosDeHoje.map((treino, index) => `
-        <div class="workout-item">
-            <input type="checkbox" id="treino-${index}" onchange="marcarTreino('${treino}', this.checked)">
-            <label for="treino-${index}">${treino}</label>
-        </div>
-    `).join('');
+    const workoutList = document.getElementById("workoutList");
+
+    workoutList.innerHTML = treinosDeHoje
+        .map((treino, index) => `
+            <div class="workout-item">
+                <input
+                    type="checkbox"
+                    id="treino-${index}"
+                    onchange="marcarTreino('${treino}', this.checked)"
+                >
+
+                <label for="treino-${index}">
+                    ${treino}
+                </label>
+            </div>
+        `)
+        .join("");
 }
 
-// Função para Salvar Alimentação
+// Salvar alimentação
 async function adicionarRefeicao() {
-    const user = document.getElementById('userSelect').value;
-    const meal = document.getElementById('mealInput').value;
-    
+    const user = document.getElementById("userSelect").value;
+    const mealInput = document.getElementById("mealInput");
+    const meal = mealInput.value.trim();
+
     if (!meal) {
         alert("Por favor, digite a refeição.");
         return;
     }
 
     try {
-        await db.ref('feed').push({
-            user: user,
-            type: 'Alimentação',
+        await db.ref("feed").push({
+            user,
+            type: "Alimentação",
             content: meal,
             timestamp: Date.now()
         });
-        document.getElementById('mealInput').value = ''; 
+
+        mealInput.value = "";
+
     } catch (error) {
         console.error("Erro ao guardar refeição:", error);
-        alert("Erro ao guardar. Verifique as regras do Firebase.");
+        alert("Não foi possível salvar a refeição.");
     }
 }
 
-// Função para Salvar Treino
+// Salvar treino concluído
 async function marcarTreino(treino, concluido) {
-    const user = document.getElementById('userSelect').value;
-    
-    if (concluido) {
-        try {
-            await db.ref('feed').push({
-                user: user,
-                type: 'Treino',
-                content: `Concluiu: ${treino}`,
-                timestamp: Date.now()
-            });
-        } catch (error) {
-            console.error("Erro ao marcar treino:", error);
-        }
+    if (!concluido) {
+        return;
+    }
+
+    const user = document.getElementById("userSelect").value;
+
+    try {
+        await db.ref("feed").push({
+            user,
+            type: "Treino",
+            content: `Concluiu: ${treino}`,
+            timestamp: Date.now()
+        });
+
+    } catch (error) {
+        console.error("Erro ao marcar treino:", error);
+        alert("Não foi possível registrar o treino.");
     }
 }
 
-// Escutar o Banco de Dados em Tempo Real para preencher o Feed
-function escutarFeed() {
-    db.ref('feed').orderByChild('timestamp').limitToLast(50).on('value', snapshot => {
-        const feedList = document.getElementById('feedList');
-        feedList.innerHTML = ''; 
-        
-        const dados = [];
-        snapshot.forEach(child => { 
-            dados.push(child.val()); 
-        });
-        
-        dados.reverse().forEach(item => {
-            const data = new Date(item.timestamp);
-            const horaFormatada = data.getHours().toString().padStart(2, '0') + ':' + data.getMinutes().toString().padStart(2, '0');
-            const dataFormatada = data.getDate().toString().padStart(2, '0') + '/' + (data.getMonth() + 1).toString().padStart(2, '0');
-            
-            feedList.innerHTML += `
-                <li class="feed-item">
-                    <div class="feed-meta">${item.user} • ${item.type} • ${dataFormatada} às ${horaFormatada}</div>
-                    <div class="feed-content">${item.content}</div>
-                </li>
-            `;
-        });
-    });
-}
+// Excluir um registro definitivamente
+async function excluirRegistro(id) {
+    const confirmar = confirm(
+        "Deseja realmente excluir este registro? Esta ação será definitiva para todos."
+    );
 
-// Inicializar as funções ao carregar a página
-carregarTreinos();
-escutarFeed();
-// Configuração do seu Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyBpGqzNtj_arT31OrsU4D8Y_jczOGDJLcQ",
-    authDomain: "projeto-verao-2027-araweb.firebaseapp.com",
-    databaseURL: "https://projeto-verao-2027-araweb-default-rtdb.firebaseio.com",
-    projectId: "projeto-verao-2027-araweb",
-    storageBucket: "projeto-verao-2027-araweb.firebasestorage.app",
-    messagingSenderId: "619260309049",
-    appId: "1:619260309049:web:50c213394aebd006e027e8",
-    measurementId: "G-5F6MXB0E9K"
-};
-
-// Inicializa Firebase (Compatível com os scripts que colocamos no index.html)
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-// Treinos Fixos (Hardcoded) para o primeiro mês
-const treinosDeHoje = [
-    "Aquecimento: 5km corrida/caminhada",
-    "Musculação: Treino de Força do dia",
-    "Alongamento / Mobilidade"
-];
-
-// Renderiza a lista de treinos
-function carregarTreinos() {
-    const workoutList = document.getElementById('workoutList');
-    workoutList.innerHTML = treinosDeHoje.map((treino, index) => `
-        <div class="workout-item">
-            <input type="checkbox" id="treino-${index}" onchange="marcarTreino('${treino}', this.checked)">
-            <label for="treino-${index}">${treino}</label>
-        </div>
-    `).join('');
-}
-
-// Função para Salvar Alimentação
-async function adicionarRefeicao() {
-    const user = document.getElementById('userSelect').value;
-    const meal = document.getElementById('mealInput').value;
-    
-    if (!meal) {
-        alert("Por favor, digite a refeição.");
+    if (!confirmar) {
         return;
     }
 
     try {
-        await db.ref('feed').push({
-            user: user,
-            type: 'Alimentação',
-            content: meal,
-            timestamp: Date.now()
-        });
-        document.getElementById('mealInput').value = ''; 
+        await db.ref(`feed/${id}`).remove();
+
     } catch (error) {
-        console.error("Erro ao guardar refeição:", error);
-        alert("Erro ao guardar. Verifique as regras do Firebase.");
+        console.error("Erro ao excluir registro:", error);
+        alert("Não foi possível excluir este registro.");
     }
 }
 
-// Função para Salvar Treino
-async function marcarTreino(treino, concluido) {
-    const user = document.getElementById('userSelect').value;
-    
-    if (concluido) {
-        try {
-            await db.ref('feed').push({
-                user: user,
-                type: 'Treino',
-                content: `Concluiu: ${treino}`,
-                timestamp: Date.now()
-            });
-        } catch (error) {
-            console.error("Erro ao marcar treino:", error);
-        }
-    }
+// Cria visualmente um item do feed
+function criarItemFeed(id, item) {
+    const data = new Date(item.timestamp);
+
+    const dataFormatada =
+        data.getDate().toString().padStart(2, "0") +
+        "/" +
+        (data.getMonth() + 1).toString().padStart(2, "0");
+
+    const horaFormatada =
+        data.getHours().toString().padStart(2, "0") +
+        ":" +
+        data.getMinutes().toString().padStart(2, "0");
+
+    const li = document.createElement("li");
+    li.className = "feed-item";
+
+    const meta = document.createElement("div");
+    meta.className = "feed-meta";
+    meta.textContent = `${item.type} • ${dataFormatada} às ${horaFormatada}`;
+
+    const content = document.createElement("div");
+    content.className = "feed-content";
+    content.textContent = item.content;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "delete-button";
+    deleteButton.type = "button";
+    deleteButton.textContent = "🗑 Excluir";
+    deleteButton.setAttribute(
+        "aria-label",
+        `Excluir registro de ${item.user}`
+    );
+
+    deleteButton.addEventListener("click", () => excluirRegistro(id));
+
+    li.appendChild(meta);
+    li.appendChild(content);
+    li.appendChild(deleteButton);
+
+    return li;
 }
 
-// Escutar o Banco de Dados em Tempo Real para preencher o Feed
+// Escuta o Firebase e organiza os registros por pessoa
 function escutarFeed() {
-    db.ref('feed').orderByChild('timestamp').limitToLast(50).on('value', snapshot => {
-        const feedList = document.getElementById('feedList');
-        feedList.innerHTML = ''; 
-        
-        const dados = [];
-        snapshot.forEach(child => { 
-            dados.push(child.val()); 
+    db.ref("feed")
+        .orderByChild("timestamp")
+        .limitToLast(100)
+        .on("value", (snapshot) => {
+
+            const feeds = {
+                Alex: [],
+                Rita: [],
+                Arthur: []
+            };
+
+            snapshot.forEach((child) => {
+                const item = child.val();
+
+                if (feeds[item.user]) {
+                    feeds[item.user].push({
+                        id: child.key,
+                        ...item
+                    });
+                }
+            });
+
+            Object.keys(feeds).forEach((user) => {
+                const feedList = document.getElementById(`feed-${user}`);
+
+                feedList.innerHTML = "";
+
+                feeds[user]
+                    .reverse()
+                    .forEach((item) => {
+                        feedList.appendChild(
+                            criarItemFeed(item.id, item)
+                        );
+                    });
+            });
         });
-        
-        dados.reverse().forEach(item => {
-            const data = new Date(item.timestamp);
-            const horaFormatada = data.getHours().toString().padStart(2, '0') + ':' + data.getMinutes().toString().padStart(2, '0');
-            const dataFormatada = data.getDate().toString().padStart(2, '0') + '/' + (data.getMonth() + 1).toString().padStart(2, '0');
-            
-            feedList.innerHTML += `
-                <li class="feed-item">
-                    <div class="feed-meta">${item.user} • ${item.type} • ${dataFormatada} às ${horaFormatada}</div>
-                    <div class="feed-content">${item.content}</div>
-                </li>
-            `;
-        });
-    });
 }
 
-// Inicializar as funções ao carregar a página
+// Inicialização
 carregarTreinos();
 escutarFeed();
